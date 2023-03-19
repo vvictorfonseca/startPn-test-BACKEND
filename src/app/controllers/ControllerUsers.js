@@ -13,6 +13,7 @@ class ControllerUsers {
     const { fullName, email, password, confirmPassword } = req.body
     
     try {
+      
       const SALT = 10
       const userAlreadyExist = await User.findOne({
         where: {
@@ -83,6 +84,7 @@ class ControllerUsers {
     const userId = res.locals.user.id
 
     try {
+      
       const SALT = 10
       const user = await User.findOne({
         where: {

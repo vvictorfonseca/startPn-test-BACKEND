@@ -4,8 +4,7 @@ const dotenv = require('dotenv')
 dotenv.config({ path: ".env" })
 
 module.exports =  async (req, res, next) => {
-  console.log("entrou")
-
+  
   const { authorization } = req.headers
   
   const token = authorization?.replace("Bearer ", "").trim()
