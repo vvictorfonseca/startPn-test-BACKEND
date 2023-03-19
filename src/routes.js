@@ -4,12 +4,18 @@ const { Router } = require('express')
 
 const ControllerUsers = require('./app/controllers/ControllerUsers')
 const ControllerServices = require('./app/controllers/ControllerServices')
+const ControllerSessions = require('./app/controllers/ControllerSessions')
 
 const routes = Router()
 
 /* MIDDLEWARES */
 
 const authMiddleware = require('./app/middlewares/auth')
+
+/* SESSIONS */
+
+routes.get("/session/:userId", authMiddleware, ControllerSessions.getByUserId)
+routes.delete("/session/:userId", authMiddleware, ControllerSessions.delete)
 
 /* USERS */
 
@@ -21,6 +27,7 @@ routes.put("/user", authMiddleware,  ControllerUsers.update)
 
 routes.post("/service", authMiddleware, ControllerServices.storage)
 routes.get("/service", authMiddleware, ControllerServices.get)
+routes.get("/service/:string", authMiddleware, ControllerServices.getServicesByDescription)
 routes.put("/service/:id", authMiddleware, ControllerServices.update)
 routes.delete("/service/:id", authMiddleware, ControllerServices.delete)
 

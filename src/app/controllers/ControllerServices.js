@@ -1,4 +1,5 @@
-const { Service } = require("../models")
+const { Service, sequelize } = require("../models")
+const { QueryTypes } = require('sequelize') 
 
 class ControllerService {
 
@@ -39,6 +40,26 @@ class ControllerService {
 
       return res.status(200).json(services)
     
+    } catch (error) {
+      return res.status(500).json({ message: "Algo deu errado para carregar os serviços" })
+    }
+  }
+
+  async getServicesByDescription(req, res) {
+    const { string } = req.params
+
+    try {
+
+      const services = await sequelize.query(
+        'SELECT * FROM "Services" WHERE lower (description) LIKE :string',
+        {
+          replacements: { string: string + '%'},
+          type: QueryTypes.SELECT
+        }
+      )
+
+      return res.status(200).json(services)
+      
     } catch (error) {
       return res.status(500).json({ message: "Algo deu errado para carregar os serviços" })
     }
