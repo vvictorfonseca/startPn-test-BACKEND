@@ -13,7 +13,6 @@ class ControllerUsers {
     const { fullName, email, password, confirmPassword } = req.body
     
     try {
-      
       const SALT = 10
       const userAlreadyExist = await User.findOne({
         where: {
@@ -35,7 +34,6 @@ class ControllerUsers {
 
       const passwordHash = bcrypt.hashSync(password, SALT)
       const confirmPasswordHash = bcrypt.hashSync(confirmPassword, SALT)
-      console.log("haha", passwordHash)
 
       await User.create({ fullName, email, password: passwordHash, confirmPassword: confirmPasswordHash })
       return res.status(201).json({ message: "Usuário criado com sucesso" })
@@ -70,8 +68,15 @@ class ControllerUsers {
 
       const token = jwt.sign({id: user.id, email: user.email}, JWT_SECRET_KEY, expiresAt)
       await Session.create({ token: token, userId: user.id })
+
+      const data = {
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        token: token
+      }
       
-      return res.status(200).json(token)
+      return res.status(200).json(data)
 
     } catch (error) {
       console.log(error)
